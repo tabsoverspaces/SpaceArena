@@ -16,6 +16,7 @@ public class Bullet implements Drawable, Movable, TakeDamageInterface, ApplyDama
 
     private int x;
     private int y;
+    private int z;
     private final int width = 5;
     private final int height = 5;
 
@@ -34,6 +35,8 @@ public class Bullet implements Drawable, Movable, TakeDamageInterface, ApplyDama
         this.isActive = true;
         this.source = source;
         this.direction = dir;
+
+        this.z = 0;
 
 
         this.baseMovementSpeed = 3;
@@ -169,5 +172,14 @@ public class Bullet implements Drawable, Movable, TakeDamageInterface, ApplyDama
     public double getTotalDamage()
     {
         return this.baseDamage + this.bonusDamage;
+    }
+
+    public int getZ()
+    {
+        return this.z;
+    }
+
+    public void setZ(int z){
+        this.z = z;
     }
 }

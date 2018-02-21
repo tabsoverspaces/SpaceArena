@@ -2,6 +2,7 @@ package gui;
 
 import engine_classes.Bullet;
 import engine_classes.Ship;
+import gui.battle_gui.Animation;
 import gui.battle_gui.Battleship;
 
 import javax.swing.*;
@@ -20,6 +21,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
     private ArrayList<Bullet> listOfBullets; // array used to store all the bullets that are currently alive/on-screenp
     private ArrayList<Bullet> tempList;
+    private ArrayList<Animation> listOfAnimation;
     private ListIterator<Bullet> iter;
 
     private final Set<Integer> pressed = new HashSet<Integer>();
@@ -31,6 +33,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
         this.listOfBullets = new ArrayList<>();
         this.tempList = new ArrayList<>();
+
+        this.listOfAnimation = new ArrayList<>();
     }
 
     public GamePanel(Ship ship1, Ship ship2)
@@ -63,6 +67,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
         // cler
         g.setColor(Color.WHITE);
         g.fillRect(0 , 0 , 2000, 1000);
+
+
         g.setColor(Color.black);
         this.bs1.draw(g);
         this.bs2.draw(g);
@@ -70,6 +76,13 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
         for(Bullet b : this.listOfBullets)
         {
             b.draw(g);
+        }
+
+        for(int i = 0 ; i < this.listOfAnimation.size();i++)
+        {
+            Animation a = this.listOfAnimation.get(i);
+
+            a.draw(g);
         }
 
 
@@ -109,6 +122,18 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
                     this.tempList.add(this.bs1.shoot());
             }
 
+            if(c==KeyEvent.VK_Z)
+            {
+                if(!this.bs1.isOnDodgeCooldown())
+                {
+                    this.bs1.dodge();
+
+                    Animation a = new Animation(this.bs1.getX()+this.bs1.getWidth(), this.bs1.getY(), "Dodging!");
+
+                    this.addAnimation(a);
+                }
+            }
+
             if(c==KeyEvent.VK_NUMPAD8)
             {
                 this.bs2.moveUp();
@@ -127,7 +152,19 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
             }
             if(c==KeyEvent.VK_NUMPAD0)
             {
-                this.bs2.shoot();
+                if (!this.bs2.isOnShootingCooldown())
+                    this.tempList.add(this.bs2.shoot());
+            }
+            if(c==KeyEvent.VK_NUMPAD1)
+            {
+                if(!this.bs2.isOnDodgeCooldown())
+                {
+                    this.bs2.dodge();
+
+                    Animation a = new Animation(this.bs2.getX()+this.bs2.getWidth(), this.bs2.getY()-(this.bs2.getHeight()/2), "Dodging!");
+
+                    this.addAnimation(a);
+                }
             }
 
     }
@@ -221,9 +258,14 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
     private void updateGame()
     {
+        if(this.gameOverCondition())
+            gameRunning = false;
+
         this.bs1.update();
+        this.bs2.update();
 
         this.updateBullets();
+        this.updateAnimations();
         this.manageTemporaryList();
         this.repaint();
     }
@@ -252,21 +294,52 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
                 this.listOfBullets.remove(b);
             }
 
-            this.collisionCheck(this.bs2, b);
+            if(b.getSource().equals(this.bs1))
+            {
+                this.collisionCheck(this.bs2, b);
+            }
+            else
+            {
+                this.collisionCheck(this.bs1, b);
+            }
         }
     }
+
+    private void updateAnimations(){
+        for(int i = 0 ; i < this.listOfAnimation.size() ; i++)
+        {
+            Animation a = this.listOfAnimation.get(i);
+
+            a.updateAnimation();
+
+            if(!a.isActive())
+            {
+              this.listOfAnimation.remove(a);
+            }
+
+
+        }
+    }
+
+
+
 
 
     public boolean collisionCheck(Battleship ship, Bullet b)
     {
 
         if(ship.getX() < b.getX() + b.getWidth() && ship.getX() + ship.getWidth() > b.getX() &&
-                ship.getY() < b.getY() + b.getHeight() && ship.getY() + ship.getHeight() > b.getY())
+                ship.getY() < b.getY() + b.getHeight() && ship.getY() + ship.getHeight() > b.getY() &&
+                ship.getZ() == b.getZ())
         {// damage ship
             ship.takeDamage(b);
             b.applyDamage(ship);
 
             this.listOfBullets.remove(b);
+
+            Animation a = new Animation(b.getX() , b.getY() , ((-1)*b.getTotalDamage())+"");
+            this.addAnimation(a);
+
 
             return true;
         }
@@ -285,5 +358,21 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
             return true;
         }
         return false;
+    }
+
+    private boolean gameOverCondition()
+    {
+        if(this.bs1.getCurrentHealth() <= 0 )
+            return true;
+        else if (this.bs2.getCurrentHealth() <= 0)
+            return true;
+        else return false;
+    }
+
+    private void addAnimation(Animation a)
+    {
+        a.startAnimation();
+
+        this.listOfAnimation.add(a);
     }
 }

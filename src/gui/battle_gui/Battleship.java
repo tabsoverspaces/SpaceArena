@@ -29,6 +29,7 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 
     private int x;
     private int y;
+    private int z;
 
     private int lowLimit;
     private int topLimit;
@@ -39,16 +40,27 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
     private long shootingCooldownLeft;
     private long lastShotAt;
 
+    private boolean dodgeCooldown;
+    private long dodgeCooldownLeft;
+    private long lastDodgeAt;
+
     private double maxHealth;
     private double maxShield;
 
     private double currentHealth;
     private double currentShield;
 
+
+
     public Battleship()
     {
         this.shootingCooldown = false;
         this.isAlive = true;
+
+        this.dodgeCooldown = false;
+
+        this.z = 0;
+
 
     }
 
@@ -87,6 +99,25 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
         }
     }
 
+    public void dodge()
+    {
+        if(this.dodgeCooldown)
+        {
+            System.out.println("dodge!");
+        }
+        else
+        {
+            // apply dodge
+            this.setZ(10);
+
+            // set up timers
+            this.dodgeCooldown = true;
+            this.lastDodgeAt = System.nanoTime();
+
+
+        }
+    }
+
     public Bullet shoot()
     {
         if(this.shootingCooldown)
@@ -102,15 +133,26 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 
         return null;
     }
-    public void update()
-    {
+    public void update() {
         long time = System.nanoTime();
 
-        if(time - this.lastShotAt >= ((1/this.ship.getTotalFireRate()*1_000_000_000)))
-        {
+        if (time - this.lastShotAt >= ((1 / this.ship.getTotalFireRate() * 1_000_000_000))) {
             this.shootingCooldown = false;
         }
+
+        // this checks to see if cooldown is done
+        if (time - this.lastDodgeAt >= this.getDodgeCooldown() * 1_000_000_000) {
+            this.dodgeCooldown = false;
+        }
+
+        // update dodge value(z)
+        if (time-this.lastDodgeAt >= (((this.ship.getTotalMovementSpeed())/20)*1_000_000_000))
+        {
+            this.z = 0;
+        }
+
     }
+
 
     private void activateShootingCooldown()
     {
@@ -127,17 +169,28 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
     {
         Direction dir;
 
+        Bullet b;
+
         if(this.playerNo == 1)
-            dir = UP;
+        {  dir = UP;
+
+
+        b = new Bullet(dir);
+            b.setX(x-b.getWidth()/2);
+            b.setY(y-b.getHeight());
+        }
         else {
             dir = DOWN;
+            b = new Bullet(dir);
+
+            b.setX(x-b.getWidth()/2);
+            b.setY(y + this.height);
+
         }
 
-        Bullet b = new Bullet(dir);
         b.setSource(this);
 
-        b.setX(x-b.getWidth()/2);
-        b.setY(y-b.getHeight());
+
 
         return b;
     }
@@ -172,6 +225,15 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
         shadeWidth = barLength * shadeLengthPercentage / 100;
         shadeHeight = barHeight * shadeHeightPercentage / 100;
 
+        int textX;
+        int healthTextY;
+        int shieldTextY;
+        int textXOffsetPercentage = 25;
+        int textYOffsetPercentage = 10;
+        int textLengthPercentage = 50;
+        int textHeightPercentage = 80;
+        int textLength, textHeight;
+
         if(this.playerNo == 1)
         {
             healthBarY = this.y + this.height + shipSpacing;
@@ -185,6 +247,15 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
             healthShadeY = healthBarY + (barHeight * shadeYOffset / 100);
             shieldShadeY = shieldBarY + (barHeight * shadeYOffset / 100);
 
+            textX = x + (barLength* textXOffsetPercentage / 100);
+//            healthTextY = healthBarY + (barHeight * textYOffsetPercentage / 100);
+//            shieldTextY = shieldBarY + (barHeight * textYOffsetPercentage/100);
+
+            healthTextY = healthBarY + (barHeight * textYOffsetPercentage/100) + 10 ;
+            shieldTextY = shieldBarY + 10 ;
+
+            textLength = barLength * textLengthPercentage;
+            textHeight =  barHeight * textHeightPercentage;
 
             // draw borders
             g.drawRect(x, healthBarY, barLength, barHeight);
@@ -197,14 +268,43 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
             g.fillRect(x+1, shieldBarY+1 , (barLength*shieldPercentage/100)-2, barHeight-2);
 
             // draw shades
-            g.setColor(new Color(0,255,127));
-            g.fillRect(shadeX , healthShadeY, shadeWidth , shadeHeight);
-            g.setColor(Color.yellow);
-            g.fillRect(shadeX , shieldShadeY, shadeWidth , shadeHeight);
+//            g.setColor(new Color(0,255,127));
+//            g.fillRect(shadeX , healthShadeY, shadeWidth , shadeHeight);
+//            g.setColor(Color.yellow);
+//            g.fillRect(shadeX , shieldShadeY, shadeWidth , shadeHeight);
+
+            // draw text on bars
+            g.setColor(Color.black);
+            g.drawString((this.currentHealth + "/"+this.maxHealth) , textX, healthTextY);
+            g.drawString((this.currentShield + "/" + this.maxShield), textX, shieldTextY);
+
 
         }
         else
         {
+            shieldBarY = this.y - shipSpacing;
+            healthBarY = shieldBarY - barSpacing - barHeight;
+
+            x = (int)this.getShipCenterX() - barLength/2;
+
+            g.drawRect(x, healthBarY, barLength, barHeight);
+            g.drawRect(x, shieldBarY , barLength, barHeight);
+
+            textX = x + (barLength* textXOffsetPercentage / 100);
+//            healthTextY = healthBarY + (barHeight * textYOffsetPercentage / 100);
+//            shieldTextY = shieldBarY + (barHeight * textYOffsetPercentage/100);
+            healthTextY = healthBarY + 10;
+            shieldTextY = shieldBarY + 10;
+
+            g.setColor(Color.green);
+            g.fillRect(x+1, healthBarY + 1 , (barLength * healthPercentage/100)-2, barHeight-2);
+            g.setColor(Color.orange);
+            g.fillRect(x + 1 , shieldBarY + 1, (barLength*shieldPercentage/100)-2, barHeight-2);
+
+            // draw text on bars
+            g.setColor(Color.black);
+            g.drawString((this.currentHealth + "/"+this.maxHealth) , textX, healthTextY);
+            g.drawString((this.currentShield + "/" + this.maxShield), textX, shieldTextY);
 
         }
     }
@@ -221,19 +321,60 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
         Graphics2D g2 = (Graphics2D)g;
 
         if(this.playerNo==1)
+            if(this.z!=0)
+                g2.setColor(Color.gray);
+        else
             g2.setColor(Color.blue);
+        else
+            if(this.z!=0)
+                g2.setColor(Color.gray);
         else
             g2.setColor(Color.red);
 
         // draw initial box and get its stats
         g2.fillRect(this.x, this.y, this.width, this.height);
 
-        System.out.println(this.y);
-
         this.drawBars(g);
+
+        // draw cooldowns
+        this.drawCooldowns(g);
 
 
         // then draw all weapons respectively
+    }
+
+    private void drawCooldowns(Graphics g)
+    {
+        int startingX = 10;
+        int spacing = 10;
+
+        int  startingY = 0;
+
+        if(this.playerNo==1)
+        {
+            startingY = this.parentPanel.getHeight()-100;
+        }
+        else
+        {
+            startingY = 10;
+        }
+
+        g.drawString("Dodge CD left :  " + this.getDodgeCooldownLeft() + " secs.", startingX, startingY);
+    }
+
+    private double getDodgeCooldownLeft()
+    {
+        if(this.dodgeCooldown)
+        {
+            return this.getDodgeCooldown() - ((System.nanoTime() - this.lastDodgeAt)/1_000_000_000.0);
+        }
+        else
+            return 0;
+    }
+
+    private double getDodgeCooldown()
+    {
+        return (((1 / this.ship.getTotalMovementSpeed()) * 100));
     }
 
     private Rectangle getCenterOfScreen(int playerNo)
@@ -268,15 +409,6 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 
         return rect;
 
-    }
-
-    private static Shape mirrorAlongX(double x, Shape shape)
-    {
-        AffineTransform at = new AffineTransform();
-        at.translate(x, 0);
-        at.scale(-1, 1);
-        at.translate(-x, 0);
-        return at.createTransformedShape(shape);
     }
 
     public void setParentPanel(JPanel panel)
@@ -372,6 +504,11 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
         this.y = y;
     }
 
+    public boolean isOnDodgeCooldown()
+    {
+        return this.dodgeCooldown;
+    }
+
     public int getLowLimit() {
         return lowLimit;
     }
@@ -421,5 +558,91 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
             this.isAlive = false;
         }
 
+    }
+
+    public boolean equals(Object obj)
+    {
+        if(this == obj)
+            return true;
+
+        if(!(obj instanceof Battleship))
+        {
+            return false;
+        }
+
+        if(this.playerNo == ((Battleship) obj).playerNo)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public boolean isShootingCooldown() {
+        return shootingCooldown;
+    }
+
+    public void setShootingCooldown(boolean shootingCooldown) {
+        this.shootingCooldown = shootingCooldown;
+    }
+
+    public long getShootingCooldownLeft() {
+        return shootingCooldownLeft;
+    }
+
+    public void setShootingCooldownLeft(long shootingCooldownLeft) {
+        this.shootingCooldownLeft = shootingCooldownLeft;
+    }
+
+    public long getLastShotAt() {
+        return lastShotAt;
+    }
+
+    public void setLastShotAt(long lastShotAt) {
+        this.lastShotAt = lastShotAt;
+    }
+
+    public double getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(double maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public double getMaxShield() {
+        return maxShield;
+    }
+
+    public void setMaxShield(double maxShield) {
+        this.maxShield = maxShield;
+    }
+
+    public double getCurrentHealth() {
+        return currentHealth;
+    }
+
+    public void setCurrentHealth(double currentHealth) {
+        this.currentHealth = currentHealth;
+    }
+
+    public double getCurrentShield() {
+        return currentShield;
+    }
+
+    public void setCurrentShield(double currentShield) {
+        this.currentShield = currentShield;
+    }public int getZ() {
+        return z;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
     }
 }
