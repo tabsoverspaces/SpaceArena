@@ -146,7 +146,7 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
         }
 
         // update dodge value(z)
-        if (time-this.lastDodgeAt >= (((this.ship.getTotalMovementSpeed())/20)*1_000_000_000))
+        if (time-this.lastDodgeAt >= this.getDodgeDuration()*1_000_000_000)
         {
             this.z = 0;
         }
@@ -375,6 +375,11 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
     private double getDodgeCooldown()
     {
         return (((1 / this.ship.getTotalMovementSpeed()) * 100));
+    }
+
+    private double getDodgeDuration()
+    {
+        return this.ship.getTotalMovementSpeed() / 10;
     }
 
     private Rectangle getCenterOfScreen(int playerNo)
