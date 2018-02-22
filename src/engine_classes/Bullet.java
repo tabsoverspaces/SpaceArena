@@ -1,10 +1,10 @@
 package engine_classes;
 
 import gui.battle_gui.Battleship;
-import gui.interfaces.ApplyDamageInterface;
-import gui.interfaces.Drawable;
-import gui.interfaces.Movable;
-import gui.interfaces.TakeDamageInterface;
+import interfaces.ApplyDamageInterface;
+import interfaces.Drawable;
+import interfaces.Movable;
+import interfaces.TakeDamageInterface;
 
 import java.awt.*;
 

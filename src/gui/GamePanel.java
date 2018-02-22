@@ -122,7 +122,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
                     this.tempList.add(this.bs1.shoot());
             }
 
-            if(c==KeyEvent.VK_Z)
+            if(c==KeyEvent.VK_B)
             {
                 if(!this.bs1.isOnDodgeCooldown())
                 {

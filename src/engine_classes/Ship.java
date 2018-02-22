@@ -1,9 +1,11 @@
 package engine_classes;
 
-import gui.interfaces.Drawable;
+import engine_classes.items.engines.BaseEngine;
+import engine_classes.items.engines.Engine;
+import engine_classes.items.shields.Shield;
+import engine_classes.items.weapons.Weapon;
 
-import javax.swing.*;
-import java.awt.*;
+import java.util.ArrayList;
 
 public class Ship{
 
@@ -21,13 +23,19 @@ public class Ship{
     private double bonusMovementSpeed;
     private double bonusFireRate;
 
+    // equipment
+    private ArrayList<Weapon> listOfWeapons;
+    private ArrayList<Shield> listOfShields;
+
+    private Engine engine;
+
 
     public Ship()
     {
         this.baseHealth = 100;
         this.baseShield = 50;
         this.baseShieldRegen = 0;
-        this.baseMovementSpeed = 10; // probably in pixels but idk, need to define screen size
+        this.baseMovementSpeed = 0; // probably in pixels but idk, need to define screen size
         this.baseFireRate = 10; // attacks per second, cd = 1/firerate
 
 
@@ -36,6 +44,13 @@ public class Ship{
         this.bonusShieldRegen = 0;
         this.bonusMovementSpeed = 0;
         this.bonusFireRate = 0;
+
+        //
+        this.listOfShields = new ArrayList<>();
+        this.listOfWeapons = new ArrayList<>();
+
+        // equip base engine
+        this.engine = new BaseEngine();
 
     }
 
@@ -50,7 +65,12 @@ public class Ship{
     }
     public double getTotalMovementSpeed()
     {
-        return this.baseMovementSpeed + this.bonusMovementSpeed;
+        return this.baseMovementSpeed + this.getEngineBonusMovementSpeed();
+    }
+
+    public double getEngineBonusMovementSpeed()
+    {
+        return this.engine.getMovementSpeedValue();
     }
 
 

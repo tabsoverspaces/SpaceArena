@@ -1,6 +1,5 @@
-package gui.interfaces;
+package interfaces;
 
-import javax.swing.*;
 import java.awt.*;
 
 public interface Drawable {

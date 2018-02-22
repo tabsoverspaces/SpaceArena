@@ -3,19 +3,16 @@ package gui.battle_gui;
 import engine_classes.Bullet;
 import engine_classes.Direction;
 import engine_classes.Ship;
-import gui.MainFrame;
-import gui.interfaces.ApplyDamageInterface;
-import gui.interfaces.Drawable;
-import gui.interfaces.Movable;
-import gui.interfaces.TakeDamageInterface;
+import interfaces.ApplyDamageInterface;
+import interfaces.Drawable;
+import interfaces.Movable;
+import interfaces.TakeDamageInterface;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
 import static engine_classes.Direction.DOWN;
 import static engine_classes.Direction.UP;
-import static javax.print.attribute.standard.Chromaticity.COLOR;
 
 public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 

@@ -1,6 +1,6 @@
 package gui.battle_gui;
 
-import gui.interfaces.Drawable;
+import interfaces.Drawable;
 
 import java.awt.*;
 
