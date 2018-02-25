@@ -306,9 +306,20 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
         }
     }
 
-    private double getShipCenterX()
+
+    public int getShipCenterX(){
+        return this.x + (this.width/2);
+    }
+    public int getShipFrontY()
     {
-        return this.x + this.width/2;
+        if(this.playerNo==1)
+        {
+            return this.y;
+        }
+        else
+        {
+            return this.y-this.height;
+        }
     }
 
 

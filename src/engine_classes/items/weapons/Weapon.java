@@ -7,7 +7,7 @@ import gui.battle_gui.Battleship;
 public abstract class Weapon extends Item {
 
     private double damage;
-    private double firerate;
+    private double fireRate;
 
     private Battleship source;
 
@@ -21,7 +21,14 @@ public abstract class Weapon extends Item {
         this();
 
         this.damage = damage;
-        this.firerate = firerate;
+        this.fireRate = firerate;
+    }
+
+    public Weapon(Battleship ship , double damage, double fireRate)
+    {
+        this(damage, fireRate);
+
+        this.source = ship;
     }
 
     public Bullet shoot()
@@ -43,11 +50,11 @@ public abstract class Weapon extends Item {
     {return this.source;}
 
 
-    public double getFirerate() {
-        return firerate;
+    public double getFireRate() {
+        return fireRate;
     }
 
-    public void setFirerate(double firerate) {
-        this.firerate = firerate;
+    public void setFirerRate(double firerate) {
+        this.fireRate = firerate;
     }
 }

@@ -6,4 +6,5 @@ public class Launcher {
     {
         MainFrame frame = new MainFrame();
     }
+
 }

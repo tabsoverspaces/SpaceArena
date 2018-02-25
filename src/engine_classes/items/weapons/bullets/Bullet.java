@@ -3,6 +3,7 @@ package engine_classes.items.weapons.bullets;
 import engine_classes.Direction;
 import engine_classes.items.weapons.Weapon;
 import gui.battle_gui.Battleship;
+import interfaces.Targetable;
 
 import java.awt.*;
 
@@ -13,7 +14,7 @@ public abstract class Bullet {
     private int width,height;
 
     private double baseMovementSpeed;
-    private double baseDamage;
+    private double weaponDamage;
 
     private double bonusMovementSpeed;
     private double bonusDamage;
@@ -22,7 +23,10 @@ public abstract class Bullet {
 
     private boolean isActive;
 
-    private Battleship source;
+    private Weapon weaponSource;
+
+    protected long lastUpdate;
+    protected long initialShotAt;
 
     private Bullet()
     {
@@ -30,21 +34,27 @@ public abstract class Bullet {
 
         this.bonusDamage = 0;
         this.bonusMovementSpeed = 0;
+
+        this.initialShotAt = System.nanoTime();
+        this.lastUpdate = this.initialShotAt;
     }
 
     private Bullet(double damage)
     {
         this();
-        this.baseDamage = damage;
+        this.weaponDamage = damage;
+
+        this.initiateBaseMovementSpeed();
+
     }
 
     public Bullet(Weapon source)
     {
         this(source.getDamage());
 
-        this.source = source.getSource();
+        this.weaponSource = source;
 
-        if(this.source.getPlayerNo() == 1)
+        if(this.weaponSource.getSource().getPlayerNo() == 1)
         {
             this.direction = Direction.UP;
         }
@@ -52,16 +62,33 @@ public abstract class Bullet {
         {
             this.direction = Direction.DOWN;
         }
+
+        // initiate location
+        this.x = this.weaponSource.getSource().getShipCenterX();
+        this.y = this.weaponSource.getSource().getShipFrontY();
     }
+
+    protected void updateTimeVariables()
+    {
+        this.lastUpdate = System.nanoTime();
+    }
+
+    public abstract boolean checkCollision(Battleship target);
+    public abstract boolean checkOutOfBounds(Rectangle bounds);
+
+
+
+
+
+
+    public abstract void initiateBaseMovementSpeed();
 
     public abstract void drawBullet(Graphics g);
 
     public abstract void updateBullet();
 
-    public abstract double getBaseMovementSpeed();
-
     public double getTotalDamage(){
-        return this.baseDamage + this.bonusDamage;
+        return this.weaponDamage + this.bonusDamage;
     }
 
     public int getX() {
@@ -109,7 +136,7 @@ public abstract class Bullet {
     }
 
     public void setBaseDamage(double baseDamage) {
-        this.baseDamage = baseDamage;
+        this.weaponDamage = baseDamage;
     }
 
     public double getBonusMovementSpeed() {
@@ -144,16 +171,16 @@ public abstract class Bullet {
         isActive = active;
     }
 
-    public Battleship getSource() {
-        return source;
+    public Weapon getSource() {
+        return this.weaponSource;
     }
 
-    public void setSource(Battleship source) {
-        this.source = source;
+    public void setSource(Weapon source) {
+        this.weaponSource = source;
     }
 
     public double getBaseDamage()
     {
-        return this.baseDamage;
+        return this.weaponDamage;
     }
 }
