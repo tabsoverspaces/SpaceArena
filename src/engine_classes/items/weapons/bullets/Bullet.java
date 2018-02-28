@@ -3,27 +3,28 @@ package engine_classes.items.weapons.bullets;
 import engine_classes.Direction;
 import engine_classes.items.weapons.Weapon;
 import gui.battle_gui.Battleship;
+import interfaces.ApplyDamageInterface;
+import interfaces.TakeDamageInterface;
 import interfaces.Targetable;
 
 import java.awt.*;
 
-public abstract class Bullet {
+public abstract class Bullet implements TakeDamageInterface, ApplyDamageInterface{
 
 
     private int x,y,z;
     private int width,height;
-
-    private double baseMovementSpeed;
-    private double weaponDamage;
-
-    private double bonusMovementSpeed;
-    private double bonusDamage;
 
     private Direction direction;
 
     private boolean isActive;
 
     private Weapon weaponSource;
+
+
+    private double bonusDamage;
+    private double bonusFirerate;
+    private double bonusShootSpeed;
 
     protected long lastUpdate;
     protected long initialShotAt;
@@ -32,25 +33,31 @@ public abstract class Bullet {
     {
         this.isActive = true;
 
-        this.bonusDamage = 0;
-        this.bonusMovementSpeed = 0;
-
         this.initialShotAt = System.nanoTime();
         this.lastUpdate = this.initialShotAt;
+
+        this.width = this.initiateWidth();
+        this.height = this.initiateHeight();
+
+        this.bonusDamage = this.initiateBonusDamage();
+        this.bonusFirerate = this.initiateBonusFirerate();
+        this.bonusShootSpeed = this.initiateBonusShootSpeed();
+
+
     }
 
-    private Bullet(double damage)
-    {
-        this();
-        this.weaponDamage = damage;
+    public abstract int initiateWidth();
+    public abstract int initiateHeight();
 
-        this.initiateBaseMovementSpeed();
 
-    }
+
+    public abstract double initiateBonusDamage();
+    public abstract double initiateBonusFirerate();
+    public abstract double initiateBonusShootSpeed();
 
     public Bullet(Weapon source)
     {
-        this(source.getDamage());
+        this();
 
         this.weaponSource = source;
 
@@ -66,6 +73,9 @@ public abstract class Bullet {
         // initiate location
         this.x = this.weaponSource.getSource().getShipCenterX();
         this.y = this.weaponSource.getSource().getShipFrontY();
+        this.z = 0;
+
+
     }
 
     protected void updateTimeVariables()
@@ -77,18 +87,14 @@ public abstract class Bullet {
     public abstract boolean checkOutOfBounds(Rectangle bounds);
 
 
-
-
-
-
-    public abstract void initiateBaseMovementSpeed();
+    public abstract double getBulletDamage();
 
     public abstract void drawBullet(Graphics g);
 
     public abstract void updateBullet();
 
     public double getTotalDamage(){
-        return this.weaponDamage + this.bonusDamage;
+        return this.weaponSource.getDamage() + this.bonusDamage + this.getBulletDamage();
     }
 
     public int getX() {
@@ -131,22 +137,6 @@ public abstract class Bullet {
         this.height = height;
     }
 
-    public void setBaseMovementSpeed(double baseMovementSpeed) {
-        this.baseMovementSpeed = baseMovementSpeed;
-    }
-
-    public void setBaseDamage(double baseDamage) {
-        this.weaponDamage = baseDamage;
-    }
-
-    public double getBonusMovementSpeed() {
-        return bonusMovementSpeed;
-    }
-
-    public void setBonusMovementSpeed(double bonusMovementSpeed) {
-        this.bonusMovementSpeed = bonusMovementSpeed;
-    }
-
     public double getBonusDamage() {
         return bonusDamage;
     }
@@ -179,8 +169,11 @@ public abstract class Bullet {
         this.weaponSource = source;
     }
 
-    public double getBaseDamage()
+    public double getInitialShootSpeed()
     {
-        return this.weaponDamage;
+        return this.weaponSource.getWeaponShootSpeed()
+                + (this.weaponSource.getWeaponShootSpeed() * this.bonusShootSpeed / 100);
     }
+
+
 }

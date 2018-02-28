@@ -2,30 +2,44 @@ package engine_classes.items.weapons.bullets;
 
 import engine_classes.items.weapons.Weapon;
 import gui.battle_gui.Battleship;
+import interfaces.ApplyDamageInterface;
+import interfaces.TakeDamageInterface;
 import interfaces.Targetable;
 
 import java.awt.*;
 
 public class BasicBullet extends Bullet {
 
-    private double movementSpeed;
+
+    @Override
+    public int initiateWidth() {
+        return 5;
+    }
+
+    @Override
+    public int initiateHeight() {
+        return 5;
+    }
+
+    @Override
+    public double initiateBonusDamage() {
+        return 0;
+    }
+
+    @Override
+    public double initiateBonusFirerate() {
+        return 0;
+    }
+
+    @Override
+    public double initiateBonusShootSpeed() {
+        return 0;
+    }
 
     public BasicBullet(Weapon source)
     {
         super(source);
 
-        this.movementSpeed = 30;
-
-        this.init();
-
-    }
-
-
-
-    private void init()
-    {
-        this.setWidth(5);
-        this.setHeight(5);
     }
 
     @Override
@@ -52,6 +66,11 @@ public class BasicBullet extends Bullet {
         return false;
     }
 
+    @Override
+    public double getBulletDamage() {
+        return 10;
+    }
+
 
     @Override
     public void drawBullet(Graphics g) {
@@ -68,17 +87,25 @@ public class BasicBullet extends Bullet {
         long timeSinceLastUpdate = System.nanoTime() - this.lastUpdate; // time in nano seconds
 
         // totalMovementSpeed * percentage of the time that's passed since the last update time / 1
-        double speedIncrement = this.movementSpeed * (timeSinceLastUpdate / 1_000_000_000.0); // DOUBLE CHECK THIS
+        double speedIncrement = this.getInitialShootSpeed() * (timeSinceLastUpdate / 1_000_000_000.0); // DOUBLE CHECK THIS
 
         this.setY(this.getY() + (int)((-1)*(this.getSource().getSource().getPlayerNo())*speedIncrement));
 
         this.updateTimeVariables();
     }
 
+
     @Override
-    public void initiateBaseMovementSpeed()
-    {
-        this.setBaseMovementSpeed(30);
+    public void applyDamage(TakeDamageInterface target) {
     }
 
+    @Override
+    public double getAppliableDamage() {
+        return this.getTotalDamage();
+    }
+
+    @Override
+    public void takeDamage(ApplyDamageInterface source) {
+        this.setActive(false);
+    }
 }

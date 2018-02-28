@@ -1,8 +1,9 @@
 package gui.battle_gui;
 
-import engine_classes.Bullet;
 import engine_classes.Direction;
 import engine_classes.Ship;
+import engine_classes.items.weapons.Weapon;
+import engine_classes.items.weapons.bullets.Bullet;
 import interfaces.ApplyDamageInterface;
 import interfaces.Drawable;
 import interfaces.Movable;
@@ -47,9 +48,11 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
     private double currentHealth;
     private double currentShield;
 
+    private Weapon activeWeapon;
 
 
-    public Battleship()
+
+    private Battleship()
     {
         this.shootingCooldown = false;
         this.isAlive = true;
@@ -57,8 +60,6 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
         this.dodgeCooldown = false;
 
         this.z = 0;
-
-
     }
 
 
@@ -74,6 +75,9 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 
         this.currentHealth = this.maxHealth;
         this.currentShield = this.maxShield;
+
+        this.setSourceToWeapons();
+        this.setDefaultActiveWeapon();
     }
 
     public void init()
@@ -88,7 +92,6 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
             this.lowLimit = this.parentPanel.getHeight();
             this.topLimit = this.parentPanel.getHeight()/2;
         }
-
         else
         {
             this.lowLimit = this.parentPanel.getHeight()/2;
@@ -133,7 +136,7 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
     public void update() {
         long time = System.nanoTime();
 
-        if (time - this.lastShotAt >= ((1 / this.ship.getTotalFireRate() * 1_000_000_000))) {
+        if (time - this.lastShotAt >= ((1 / this.activeWeapon.getFireRate() * 1_000_000_000))) {
             this.shootingCooldown = false;
         }
 
@@ -166,26 +169,23 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
     {
         Direction dir;
 
-        Bullet b;
+        Bullet b = this.activeWeapon.getBulletModel();
 
         if(this.playerNo == 1)
         {  dir = UP;
 
-
-        b = new Bullet(dir);
             b.setX(x-b.getWidth()/2);
             b.setY(y-b.getHeight());
         }
         else {
             dir = DOWN;
-            b = new Bullet(dir);
 
             b.setX(x-b.getWidth()/2);
             b.setY(y + this.height);
 
         }
 
-        b.setSource(this);
+        b.setDirection(dir);
 
 
 
@@ -407,7 +407,7 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 
         x = (this.parentPanel.getWidth()/2) - (this.width/2);
 
-        if(playerNo == 2) // fist player
+        if(playerNo == -1) // fist player
         {
             y = 0;
             y += shipOffset;
@@ -658,4 +658,18 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
     public void setZ(int z) {
         this.z = z;
     }
+
+    public void setDefaultActiveWeapon()
+    {
+        this.activeWeapon = this.ship.getListOfWeapons().get(0);
+    }
+
+    public void setSourceToWeapons()
+    {
+        for(Weapon w : this.ship.getListOfWeapons())
+        {
+            w.setSource(this);
+        }
+    }
+
 }

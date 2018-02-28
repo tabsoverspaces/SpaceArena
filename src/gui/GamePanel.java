@@ -1,7 +1,7 @@
 package gui;
 
-import engine_classes.Bullet;
 import engine_classes.Ship;
+import engine_classes.items.weapons.bullets.Bullet;
 import gui.battle_gui.Animation;
 import gui.battle_gui.Battleship;
 
@@ -22,7 +22,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
     private ArrayList<Bullet> listOfBullets; // array used to store all the bullets that are currently alive/on-screenp
     private ArrayList<Bullet> tempList;
     private ArrayList<Animation> listOfAnimation;
-    private ListIterator<Bullet> iter;
 
     private final Set<Integer> pressed = new HashSet<Integer>();
 
@@ -44,7 +43,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
         this.setBackground(Color.RED);
 
         this.bs1 = new Battleship(ship1, 1);
-        this.bs2 = new Battleship(ship2, 2);
+        this.bs2 = new Battleship(ship2, -1);
 
         this.addKeyListener(this);
 
@@ -75,7 +74,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
         for(Bullet b : this.listOfBullets)
         {
-            b.draw(g);
+            b.drawBullet(g);
         }
 
         for(int i = 0 ; i < this.listOfAnimation.size();i++)
@@ -213,6 +212,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
                 while( now - lastUpdateTime > TIME_BETWEEN_UPDATES && updateCount < MAX_UPDATES_BEFORE_RENDER )
                 {
                     updateGame();
+
                     lastUpdateTime += TIME_BETWEEN_UPDATES;
                     updateCount++;
                 }
@@ -287,14 +287,14 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
         {
             Bullet b = this.listOfBullets.get(i);
 
-            b.move();
+            b.updateBullet();
 
             if(this.outOfBounds(b) || (!b.isActive()))
             {
                 this.listOfBullets.remove(b);
             }
 
-            if(b.getSource().equals(this.bs1))
+            if(b.getSource().getSource().equals(this.bs1))
             {
                 this.collisionCheck(this.bs2, b);
             }
@@ -328,9 +328,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
     public boolean collisionCheck(Battleship ship, Bullet b)
     {
 
-        if(ship.getX() < b.getX() + b.getWidth() && ship.getX() + ship.getWidth() > b.getX() &&
-                ship.getY() < b.getY() + b.getHeight() && ship.getY() + ship.getHeight() > b.getY() &&
-                ship.getZ() == b.getZ())
+        if(b.checkCollision(ship))
         {// damage ship
             ship.takeDamage(b);
             b.applyDamage(ship);

@@ -9,27 +9,26 @@ public abstract class Weapon extends Item {
     private double damage;
     private double fireRate;
 
+    private double weaponShootSpeed;
+
     private Battleship source;
 
     public Weapon()
     {
+        this.damage = this.initiateDamage();
+        this.fireRate = this.initiateFireRate();
+        this.weaponShootSpeed = this.initiateShootSpeed();
 
     }
-
-    public Weapon(double damage, double firerate)
+    public void setSource(Battleship s)
     {
-        this();
-
-        this.damage = damage;
-        this.fireRate = firerate;
+        this.source = s;
     }
 
-    public Weapon(Battleship ship , double damage, double fireRate)
-    {
-        this(damage, fireRate);
 
-        this.source = ship;
-    }
+    public abstract double initiateDamage();
+    public abstract double initiateFireRate();
+    public abstract double initiateShootSpeed();
 
     public Bullet shoot()
     {
@@ -54,7 +53,15 @@ public abstract class Weapon extends Item {
         return fireRate;
     }
 
-    public void setFirerRate(double firerate) {
+    public void setFireRate(double firerate) {
         this.fireRate = firerate;
+    }
+
+    public double getWeaponShootSpeed() {
+        return weaponShootSpeed;
+    }
+
+    public void setWeaponShootSpeed(double weaponShootSpeed) {
+        this.weaponShootSpeed = weaponShootSpeed;
     }
 }
