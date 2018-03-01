@@ -1,6 +1,7 @@
-package gui;
+package gui.base_gui;
 
 import engine_classes.Ship;
+import gui.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,8 +10,6 @@ public class MainFrame extends JFrame {
 
     public static final int width = 1280;
     public static final int height = 700;
-
-
 
     private GamePanel gamePanel;
 

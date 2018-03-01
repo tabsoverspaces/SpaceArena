@@ -1,4 +1,4 @@
-import gui.MainFrame;
+import gui.base_gui.MainFrame;
 
 public class Launcher {
 

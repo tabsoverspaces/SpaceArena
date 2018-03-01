@@ -3,6 +3,7 @@ package gui;
 import engine_classes.Ship;
 import engine_classes.items.weapons.bullets.Bullet;
 import gui.battle_gui.Animation;
+import gui.battle_gui.Battle;
 import gui.battle_gui.Battleship;
 
 import javax.swing.*;
@@ -25,8 +26,12 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
     private final Set<Integer> pressed = new HashSet<Integer>();
 
-    public GamePanel()
+    private Battle battle;
+
+    public GamePanel(Battle battle)
     {
+        this.battle = battle;
+
         this.gameRunning = true;
         this.paused = false;
 

@@ -1,11 +1,10 @@
 package engine_classes.items.weapons.bullets;
 
-import engine_classes.Direction;
+import utility.Direction;
 import engine_classes.items.weapons.Weapon;
 import gui.battle_gui.Battleship;
 import interfaces.ApplyDamageInterface;
 import interfaces.TakeDamageInterface;
-import interfaces.Targetable;
 
 import java.awt.*;
 
