@@ -1,20 +1,20 @@
 package engine_classes.items.weapons;
 
-import engine_classes.items.weapons.bullets.BasicBullet;
 import engine_classes.items.weapons.bullets.Bullet;
-import engine_classes.items.weapons.bullets.RocketMissile;
-import gui.battle_gui.Battleship;
 
-public class PopGun extends Weapon {
 
-    private final double DAMAGE = 0;
+
+public class Shotgun extends Weapon {
+
+    private final double DAMAGE = 100;
     private final double FIRERATE = 20;
 
+    private long shotAt;
+    private int distancePassed;
 
-    public PopGun()
-    {
-        super();
-    }
+    public Shotgun()
+    {}
+
 
     @Override
     public double initiateDamage() {
@@ -31,14 +31,12 @@ public class PopGun extends Weapon {
         return 200;
     }
 
-
     @Override
     public Bullet[] getBulletModel() {
 
-        Bullet[] b = new Bullet[1];
-        b[0] = new RocketMissile(this);
 
-        return b;
+
+        return null;
     }
 
     @Override

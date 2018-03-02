@@ -22,6 +22,8 @@ public class BattlePanel extends JPanel {
     }
     private void update()
     {
+
+
         this.battle.updateBattle();
         this.repaint();
     }

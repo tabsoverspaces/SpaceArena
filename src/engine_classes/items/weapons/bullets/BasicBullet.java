@@ -100,11 +100,6 @@ public class BasicBullet extends Bullet {
     }
 
     @Override
-    public double getAppliableDamage() {
-        return this.getTotalDamage();
-    }
-
-    @Override
     public void takeDamage(ApplyDamageInterface source) {
         this.setActive(false);
     }

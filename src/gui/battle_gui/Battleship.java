@@ -34,10 +34,6 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 
     private JPanel parentPanel;
 
-    private boolean shootingCooldown;
-    private long shootingCooldownLeft;
-    private long lastShotAt;
-
     private boolean dodgeCooldown;
     private long dodgeCooldownLeft;
     private long lastDodgeAt;
@@ -54,7 +50,6 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 
     private Battleship()
     {
-        this.shootingCooldown = false;
         this.isAlive = true;
 
         this.dodgeCooldown = false;
@@ -123,7 +118,7 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
         }
     }
 
-    public Bullet shoot()
+    public Bullet[] shoot()
     {
         if(this.shootingCooldown)
         {
@@ -138,6 +133,7 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 
         return null;
     }
+
     public void update() {
         long time = System.nanoTime();
 

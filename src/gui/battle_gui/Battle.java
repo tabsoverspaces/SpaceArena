@@ -52,6 +52,12 @@ public class Battle {
 
     public void updateBattle()
     {
+        if(this.battleOverCondition())
+            this.battleRunning = false;
+
+        this.battleship1.update();
+        this.battleship2.update();
+
         for(int i = 0 ; i < this.listOfBullets.size();i++)
         {
             Bullet b = this.listOfBullets.get(i);
@@ -91,6 +97,16 @@ public class Battle {
 
             a.draw(g);
         }
+    }
+
+    private boolean battleOverCondition()
+    {
+        if(this.battleship1.getCurrentHealth() <= 0 )
+            return true;
+        else if (this.battleship2.getCurrentHealth() <= 0)
+            return true;
+
+        return false;
     }
 
 

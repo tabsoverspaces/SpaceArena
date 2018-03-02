@@ -174,5 +174,11 @@ public abstract class Bullet implements TakeDamageInterface, ApplyDamageInterfac
                 + (this.weaponSource.getWeaponShootSpeed() * this.bonusShootSpeed / 100);
     }
 
+    public double getAppliableDamage()
+    {
+        return this.getTotalDamage();
+    }
+
+
 
 }

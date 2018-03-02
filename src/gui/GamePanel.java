@@ -129,7 +129,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
             if (c == KeyEvent.VK_SPACE) {
                 if (!this.bs1.isOnShootingCooldown())
-                    this.tempList.add(this.bs1.shoot());
+                    this.addBullets(this.bs1.shoot());
             }
 
             if(c==KeyEvent.VK_B)
@@ -163,7 +163,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
             if(c==KeyEvent.VK_NUMPAD0)
             {
                 if (!this.bs2.isOnShootingCooldown())
-                    this.tempList.add(this.bs2.shoot());
+
+                    this.addBullets(this.bs1.shoot());
             }
             if(c==KeyEvent.VK_NUMPAD1)
             {
@@ -290,6 +291,16 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
         }
 
         this.tempList.clear();
+    }
+
+    private void addBullets(Bullet[] array)
+    {
+        for(int i = 0 ; i  < array.length ; i++)
+        {
+            Bullet b = array[i];
+
+            this.listOfBullets.add(b);
+        }
     }
 
     private void updateBullets()
