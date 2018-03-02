@@ -5,6 +5,7 @@ import engine_classes.items.engines.Engine;
 import engine_classes.items.shields.Shield;
 import engine_classes.items.weapons.PopGun;
 import engine_classes.items.weapons.Weapon;
+import gui.battle_gui.Battleship;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -51,6 +52,11 @@ public class Ship{
 
 
 
+    }
+
+    public Battleship createBattleship()
+    {
+        return new Battleship(this);
     }
 
     public void addWeapon(Weapon weapon)

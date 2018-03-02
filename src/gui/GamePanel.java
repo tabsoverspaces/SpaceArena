@@ -28,9 +28,9 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
     private Battle battle;
 
-    public GamePanel(Battle battle)
+    private GamePanel()
     {
-        this.battle = battle;
+
 
         this.gameRunning = true;
         this.paused = false;
@@ -39,6 +39,12 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
         this.tempList = new ArrayList<>();
 
         this.listOfAnimation = new ArrayList<>();
+    }
+
+    public GamePanel(Battle battle)
+    {
+        this();
+        this.battle = battle;
     }
 
     public GamePanel(Ship ship1, Ship ship2)
@@ -68,7 +74,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
     public void paintComponent(Graphics g){
 
-        // cler
+        // clear
         g.setColor(Color.WHITE);
         g.fillRect(0 , 0 , 2000, 1000);
 

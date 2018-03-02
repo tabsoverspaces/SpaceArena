@@ -62,13 +62,11 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
         this.z = 0;
     }
 
-
-    public Battleship(Ship ship, int playerNo)
+    public Battleship(Ship ship)
     {
         this();
 
         this.ship = ship;
-        this.playerNo = playerNo;
 
         this.maxHealth = this.ship.getTotalHealth();
         this.maxShield = this.ship.getTotalShield();
@@ -78,6 +76,13 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 
         this.setSourceToWeapons();
         this.setDefaultActiveWeapon();
+    }
+
+
+    public Battleship(Ship ship, int playerNo)
+    {
+        this(ship);
+        this.playerNo = playerNo;
     }
 
     public void init()
