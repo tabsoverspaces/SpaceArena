@@ -28,6 +28,13 @@ public abstract class Weapon extends Item {
         this.shootingCooldown = false;
 
     }
+
+    public void update()
+    {
+        this.updateShootingCooldown();
+    }
+
+
     public void setSource(Battleship s)
     {
         this.source = s;
@@ -42,10 +49,12 @@ public abstract class Weapon extends Item {
     {
         this.activateShootingCooldown();
 
-        return this.getBulletModel();
+        return this.shootBullets();
     }
 
-    public abstract Bullet[] getBulletModel();
+    protected abstract Bullet[] shootBullets();
+
+    public abstract Bullet getBulletModel();
 
     public double getDamage() {
         return damage;
@@ -57,7 +66,6 @@ public abstract class Weapon extends Item {
 
     public Battleship getSource()
     {return this.source;}
-
 
     public double getFireRate() {
         return fireRate;
@@ -85,4 +93,33 @@ public abstract class Weapon extends Item {
         this.shootingCooldown = false;
     }
 
+    public void updateShootingCooldown()
+    {
+        long timeNow = System.nanoTime();
+
+        if (timeNow - this.lastShotAt >= ((1 / this.getWeaponAndBulletFireRate() * 1_000_000_000))) {
+            this.deactivateShootingCooldown();
+        }
+    }
+
+    private double getWeaponAndBulletFireRate()
+    {
+        return this.fireRate + this.getBulletModel().getBonusFireRate();
+    }
+
+    public long getLastShotAt() {
+        return lastShotAt;
+    }
+
+    public void setLastShotAt(long lastShotAt) {
+        this.lastShotAt = lastShotAt;
+    }
+
+    public boolean isShootingCooldown() {
+        return shootingCooldown;
+    }
+
+    public void setShootingCooldown(boolean shootingCooldown) {
+        this.shootingCooldown = shootingCooldown;
+    }
 }

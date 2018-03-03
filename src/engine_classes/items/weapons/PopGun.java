@@ -31,14 +31,20 @@ public class PopGun extends Weapon {
         return 200;
     }
 
+    @Override
+    public Bullet[] shootBullets() {
+        Bullet[] a = new Bullet[1];
+
+        a[0] = new BasicBullet(this);
+
+        return a;
+    }
+
 
     @Override
-    public Bullet[] getBulletModel() {
+    public Bullet getBulletModel() {
 
-        Bullet[] b = new Bullet[1];
-        b[0] = new RocketMissile(this);
-
-        return b;
+        return new BasicBullet(this);
     }
 
     @Override

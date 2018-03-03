@@ -120,26 +120,14 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 
     public Bullet[] shoot()
     {
-        if(this.shootingCooldown)
-        {
-            System.out.println("cooldown!");
-
-        }
-        else {
-
-            this.activateShootingCooldown();
-            return this.createBullet(this.x + this.width / 2, this.y);
-        }
-
-        return null;
+        return this.activeWeapon.shoot();
     }
 
     public void update() {
         long time = System.nanoTime();
 
-        if (time - this.lastShotAt >= ((1 / this.activeWeapon.getFireRate() * 1_000_000_000))) {
-            this.shootingCooldown = false;
-        }
+        // update active weapon
+        this.activeWeapon.update();
 
         // this checks to see if cooldown is done
         if (time - this.lastDodgeAt >= this.getDodgeCooldown() * 1_000_000_000) {
@@ -152,45 +140,6 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
             this.z = 0;
         }
 
-    }
-
-
-    private void activateShootingCooldown()
-    {
-        this.shootingCooldown = true;
-        this.lastShotAt = System.nanoTime();
-    }
-
-    public boolean isOnShootingCooldown()
-    {
-        return this.shootingCooldown;
-    }
-
-    public Bullet createBullet(int x, int y)
-    {
-        Direction dir;
-
-        Bullet b = this.activeWeapon.getBulletModel();
-
-        if(this.playerNo == 1)
-        {  dir = UP;
-
-            b.setX(x-b.getWidth()/2);
-            b.setY(y-b.getHeight());
-        }
-        else {
-            dir = DOWN;
-
-            b.setX(x-b.getWidth()/2);
-            b.setY(y + this.height);
-
-        }
-
-        b.setDirection(dir);
-
-
-
-        return b;
     }
 
     private void drawBars(Graphics g)
@@ -319,7 +268,7 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
         }
         else
         {
-            return this.y-this.height;
+            return this.y+this.height;
         }
     }
 
@@ -598,30 +547,6 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
         isAlive = alive;
     }
 
-    public boolean isShootingCooldown() {
-        return shootingCooldown;
-    }
-
-    public void setShootingCooldown(boolean shootingCooldown) {
-        this.shootingCooldown = shootingCooldown;
-    }
-
-    public long getShootingCooldownLeft() {
-        return shootingCooldownLeft;
-    }
-
-    public void setShootingCooldownLeft(long shootingCooldownLeft) {
-        this.shootingCooldownLeft = shootingCooldownLeft;
-    }
-
-    public long getLastShotAt() {
-        return lastShotAt;
-    }
-
-    public void setLastShotAt(long lastShotAt) {
-        this.lastShotAt = lastShotAt;
-    }
-
     public double getMaxHealth() {
         return maxHealth;
     }
@@ -663,6 +588,34 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
     public void setDefaultActiveWeapon()
     {
         this.activeWeapon = this.ship.getListOfWeapons().get(0);
+    }
+
+    public boolean isDodgeCooldown() {
+        return dodgeCooldown;
+    }
+
+    public void setDodgeCooldown(boolean dodgeCooldown) {
+        this.dodgeCooldown = dodgeCooldown;
+    }
+
+    public void setDodgeCooldownLeft(long dodgeCooldownLeft) {
+        this.dodgeCooldownLeft = dodgeCooldownLeft;
+    }
+
+    public long getLastDodgeAt() {
+        return lastDodgeAt;
+    }
+
+    public void setLastDodgeAt(long lastDodgeAt) {
+        this.lastDodgeAt = lastDodgeAt;
+    }
+
+    public Weapon getActiveWeapon() {
+        return activeWeapon;
+    }
+
+    public void setActiveWeapon(Weapon activeWeapon) {
+        this.activeWeapon = activeWeapon;
     }
 
     public void setSourceToWeapons()

@@ -4,6 +4,7 @@ import engine_classes.items.engines.BaseEngine;
 import engine_classes.items.engines.Engine;
 import engine_classes.items.shields.Shield;
 import engine_classes.items.weapons.PopGun;
+import engine_classes.items.weapons.Shotgun;
 import engine_classes.items.weapons.Weapon;
 import gui.battle_gui.Battleship;
 
@@ -48,7 +49,7 @@ public class Ship{
         this.engine = new BaseEngine();
 
         // wepaos
-        this.addWeapon(new PopGun());
+        this.addWeapon(new Shotgun());
 
 
 

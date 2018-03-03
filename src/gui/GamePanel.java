@@ -128,7 +128,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
             }
 
             if (c == KeyEvent.VK_SPACE) {
-                if (!this.bs1.isOnShootingCooldown())
+                if (!this.bs1.getActiveWeapon().isShootingCooldown())
                     this.addBullets(this.bs1.shoot());
             }
 
@@ -162,9 +162,9 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
             }
             if(c==KeyEvent.VK_NUMPAD0)
             {
-                if (!this.bs2.isOnShootingCooldown())
+                if (!this.bs2.getActiveWeapon().isShootingCooldown())
 
-                    this.addBullets(this.bs1.shoot());
+                    this.addBullets(this.bs2.shoot());
             }
             if(c==KeyEvent.VK_NUMPAD1)
             {
@@ -371,7 +371,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
     private boolean outOfBounds(Bullet b)
     {
-        if(b.getY() > this.getHeight()|| (b.getY() < 0))
+        if(b.checkOutOfBounds(new Rectangle(this.getBounds())))
         {
             this.listOfBullets.remove(b);
             System.out.println("removed");
