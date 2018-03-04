@@ -83,8 +83,9 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
         this.bs1.draw(g);
         this.bs2.draw(g);
 
-        for(Bullet b : this.listOfBullets)
+        for(int i = 0 ; i < this.listOfBullets.size() ; i++)
         {
+            Bullet b = this.listOfBullets.get(i);
             b.drawBullet(g);
         }
 
@@ -314,6 +315,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
             if(this.outOfBounds(b) || (!b.isActive()))
             {
                 this.listOfBullets.remove(b);
+                continue;
             }
 
             if(b.getSource().getSource().equals(this.bs1))
@@ -371,7 +373,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
     private boolean outOfBounds(Bullet b)
     {
-        if(b.checkOutOfBounds(new Rectangle(this.getBounds())))
+        if(b.checkOutOfBounds(new Rectangle(0,0,this.getWidth(),this.getHeight())))
         {
             this.listOfBullets.remove(b);
             System.out.println("removed");

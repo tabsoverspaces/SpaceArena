@@ -12,11 +12,10 @@ public class ShotgunGauge extends Bullet {
     private int xMoveSpeed;
     private int yMoveSpeed;
 
-    private double startingDamage;
     private int startingX;
     private int startingY;
 
-    private final int MAXIMUM_DISTANCE = 300; // hipotenouse between x and y
+    private final int MAXIMUM_DISTANCE = 200; // hipotenouse between x and y
 
     private double damagePenalty;
     private final int MINIMUM_DAMAGE_PENALTY = 0;
@@ -34,7 +33,7 @@ public class ShotgunGauge extends Bullet {
 
     public ShotgunGauge(Weapon source, int xMoveSpeed, int yMoveSpeed)
     {
-        super(source);
+        this(source);
 
         this.xMoveSpeed = xMoveSpeed;
         this.yMoveSpeed = yMoveSpeed;

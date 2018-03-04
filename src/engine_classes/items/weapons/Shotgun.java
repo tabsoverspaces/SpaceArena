@@ -7,7 +7,7 @@ import engine_classes.items.weapons.bullets.ShotgunGauge;
 public class Shotgun extends Weapon {
 
     private final double DAMAGE = 0;
-    private final double FIRERATE = 10;
+    private final double FIRERATE = 4;
 
     private int currentNumberOfShells;
 
@@ -32,7 +32,7 @@ public class Shotgun extends Weapon {
 
     @Override
     public double initiateShootSpeed() {
-        return 200;
+        return 400;
     }
 
     @Override
@@ -40,13 +40,13 @@ public class Shotgun extends Weapon {
         Bullet[] a = new Bullet[3];
 
         // left shell
-        ShotgunGauge b1 = new ShotgunGauge(this, -50, (int)this.getWeaponShootSpeed());
+        ShotgunGauge b1 = new ShotgunGauge(this, -50*(this.getSource().getPlayerNo()), (int)this.getWeaponShootSpeed());
 
         // center shell
-        ShotgunGauge b2 = new ShotgunGauge(this,  0,(int)this.getWeaponShootSpeed());
+        ShotgunGauge b2 = new ShotgunGauge(this, 0,(int)this.getWeaponShootSpeed());
 
         // right shell
-        ShotgunGauge b3 = new ShotgunGauge(this, 50, (int)this.getWeaponShootSpeed());
+        ShotgunGauge b3 = new ShotgunGauge(this, (50)*(this.getSource().getPlayerNo()), (int)this.getWeaponShootSpeed());
 
         a[0] = b1;
         a[1] = b2;

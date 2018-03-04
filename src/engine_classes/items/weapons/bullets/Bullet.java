@@ -70,7 +70,7 @@ public abstract class Bullet implements TakeDamageInterface, ApplyDamageInterfac
         }
 
         // initiate location
-        this.x = this.weaponSource.getSource().getShipCenterX();
+        this.x = this.weaponSource.getSource().getShipCenterX() - (this.getWidth()/2);
         this.y = this.weaponSource.getSource().getShipFrontY();
         this.z = 0;
 
