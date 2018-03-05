@@ -42,8 +42,9 @@ public abstract class Bullet implements TakeDamageInterface, ApplyDamageInterfac
         this.bonusFirerate = this.initiateBonusFirerate();
         this.bonusShootSpeed = this.initiateBonusShootSpeed();
 
-
     }
+
+
 
     public abstract int initiateWidth();
     public abstract int initiateHeight();

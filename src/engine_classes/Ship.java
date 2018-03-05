@@ -49,7 +49,9 @@ public class Ship{
         this.engine = new BaseEngine();
 
         // wepaos
+        this.addWeapon(new PopGun());
         this.addWeapon(new Shotgun());
+
 
 
 

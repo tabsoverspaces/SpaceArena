@@ -118,6 +118,43 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
         }
     }
 
+    private Weapon nextWeapon()
+    {
+        int currentIndex = this.ship.getListOfWeapons().indexOf(this.activeWeapon);
+
+        currentIndex++; // increment by 1
+
+        if(currentIndex == this.ship.getListOfWeapons().size())
+            currentIndex = 0;
+
+        Weapon nextWeapon = this.ship.getListOfWeapons().get(currentIndex);
+
+        return nextWeapon;
+    }
+
+    private Weapon previousWeapon()
+    {
+        int currentIndex = this.ship.getListOfWeapons().indexOf(this.activeWeapon);
+
+        currentIndex--;  // decrement by 1
+
+        if(currentIndex == -1)
+            currentIndex = this.ship.getListOfWeapons().size()-1;
+
+        Weapon previousWeapon = this.ship.getListOfWeapons().get(currentIndex);
+
+        return previousWeapon;
+    }
+
+    public void changeToNextWeapon()
+    {
+        this.activeWeapon = this.nextWeapon();
+    }
+    public void changeToPreviousWeapon()
+    {
+        this.activeWeapon = this.previousWeapon();
+    }
+
     public Bullet[] shoot()
     {
         return this.activeWeapon.shoot();

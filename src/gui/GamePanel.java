@@ -145,6 +145,21 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
                 }
             }
 
+            if(c==KeyEvent.VK_Q)
+            {
+                this.bs1.changeToPreviousWeapon();
+                Animation a = new Animation(this.bs1.getX() + this.bs1.getWidth() , this.bs1.getY(), "Changed weapon");
+
+                this.addAnimation(a);
+            }
+            if(c==KeyEvent.VK_E)
+            {
+                this.bs1.changeToNextWeapon();
+                Animation a = new Animation(this.bs1.getX() + this.bs1.getWidth() , this.bs1.getY(), "Changed weapon");
+
+                this.addAnimation(a);
+            }
+
             if(c==KeyEvent.VK_NUMPAD8)
             {
                 this.bs2.moveUp();
@@ -177,6 +192,22 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
                     this.addAnimation(a);
                 }
+            }
+
+            if(c==KeyEvent.VK_NUMPAD7)
+            {
+                this.bs2.changeToPreviousWeapon();
+                Animation a = new Animation(this.bs2.getX() + this.bs2.getWidth() , this.bs2.getY(), "Changed weapon");
+
+                this.addAnimation(a);
+            }
+
+            if(c==KeyEvent.VK_NUMPAD9)
+            {
+                this.bs2.changeToNextWeapon();
+                Animation a = new Animation(this.bs2.getX() + this.bs2.getWidth() , this.bs2.getY(), "Changed weapon");
+
+                this.addAnimation(a);
             }
 
     }
