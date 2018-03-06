@@ -1,17 +1,15 @@
 package engine_classes.items.weapons;
 
-import engine_classes.items.weapons.bullets.BasicBullet;
 import engine_classes.items.weapons.bullets.Bullet;
-import engine_classes.items.weapons.bullets.RocketMissile;
-import gui.battle_gui.Battleship;
+import engine_classes.items.weapons.bullets.LaserRay;
 
-public class PopGun extends Weapon {
+public class LaserGun extends Weapon {
 
     private final double DAMAGE = 0;
-    private final double FIRERATE = 20;
-    private final double BULLET_SPEED = 200;
+    private final double FIRERATE = 100;
+    private final double BULLET_SPEED = 2000;
 
-    public PopGun()
+    public LaserGun()
     {
         super();
     }
@@ -32,19 +30,17 @@ public class PopGun extends Weapon {
     }
 
     @Override
-    public Bullet[] shootBullets() {
-        Bullet[] a = new Bullet[1];
+    protected Bullet[] shootBullets() {
+        Bullet[] b = new Bullet[1];
 
-        a[0] = new BasicBullet(this);
+        b[0] = new LaserRay(this);
 
-        return a;
+        return b;
     }
-
 
     @Override
     public Bullet getBulletModel() {
-
-        return new BasicBullet(this);
+        return new LaserRay(this);
     }
 
     @Override

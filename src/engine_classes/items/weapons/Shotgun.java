@@ -40,7 +40,7 @@ public class Shotgun extends Weapon {
         Bullet[] a = new Bullet[3];
 
         // left shell
-        ShotgunGauge b1 = new ShotgunGauge(this, -50*(this.getSource().getPlayerNo()), (int)this.getWeaponShootSpeed());
+        ShotgunGauge b1 = new ShotgunGauge(this, -50* (this.getSource().getPlayerNo()), (int)this.getWeaponShootSpeed());
 
         // center shell
         ShotgunGauge b2 = new ShotgunGauge(this, 0,(int)this.getWeaponShootSpeed());

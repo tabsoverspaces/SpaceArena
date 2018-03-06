@@ -3,6 +3,7 @@ package engine_classes;
 import engine_classes.items.engines.BaseEngine;
 import engine_classes.items.engines.Engine;
 import engine_classes.items.shields.Shield;
+import engine_classes.items.weapons.LaserGun;
 import engine_classes.items.weapons.PopGun;
 import engine_classes.items.weapons.Shotgun;
 import engine_classes.items.weapons.Weapon;
@@ -51,6 +52,7 @@ public class Ship{
         // wepaos
         this.addWeapon(new PopGun());
         this.addWeapon(new Shotgun());
+        this.addWeapon(new LaserGun());
 
 
 
