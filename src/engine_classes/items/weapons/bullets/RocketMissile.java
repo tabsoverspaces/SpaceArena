@@ -69,7 +69,6 @@ public class RocketMissile extends Bullet{
 
         this.drawRocketMissile(g, this.getX(), this.getY());
 
-
     }
 
     private void drawRocketMissile(Graphics g, int x, int y)
