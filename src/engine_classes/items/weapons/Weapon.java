@@ -4,6 +4,8 @@ import engine_classes.items.Item;
 import engine_classes.items.weapons.bullets.Bullet;
 import gui.battle_gui.Battleship;
 
+import java.awt.*;
+
 public abstract class Weapon extends Item {
 
     private double damage;
@@ -51,6 +53,8 @@ public abstract class Weapon extends Item {
 
         return this.shootBullets();
     }
+
+    public abstract void drawWeapon(Graphics g);
 
     protected abstract Bullet[] shootBullets();
 

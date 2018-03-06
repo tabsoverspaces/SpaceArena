@@ -5,6 +5,8 @@ import engine_classes.items.weapons.bullets.Bullet;
 import engine_classes.items.weapons.bullets.RocketMissile;
 import gui.battle_gui.Battleship;
 
+import java.awt.*;
+
 public class PopGun extends Weapon {
 
     private final double DAMAGE = 0;
@@ -30,7 +32,11 @@ public class PopGun extends Weapon {
     public double initiateShootSpeed() {
         return BULLET_SPEED;
     }
+    @Override
+    public void drawWeapon(Graphics g){
 
+
+    }
     @Override
     public Bullet[] shootBullets() {
         Bullet[] a = new Bullet[1];

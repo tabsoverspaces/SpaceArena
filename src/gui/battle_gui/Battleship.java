@@ -315,6 +315,9 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 
         Graphics2D g2 = (Graphics2D)g;
 
+        // draw active weapon
+        this.activeWeapon.drawWeapon(g);
+
         if(this.playerNo==1)
             if(this.z!=0)
                 g2.setColor(Color.gray);
@@ -333,6 +336,7 @@ public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 
         // draw cooldowns
         this.drawCooldowns(g);
+
 
 
         // then draw all weapons respectively

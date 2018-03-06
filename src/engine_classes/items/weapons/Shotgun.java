@@ -3,6 +3,8 @@ package engine_classes.items.weapons;
 import engine_classes.items.weapons.bullets.Bullet;
 import engine_classes.items.weapons.bullets.ShotgunGauge;
 
+import java.awt.*;
+
 
 public class Shotgun extends Weapon {
 
@@ -19,7 +21,11 @@ public class Shotgun extends Weapon {
         this.currentNumberOfShells = 3;
     }
 
+    @Override
+    public void drawWeapon(Graphics g){
 
+
+    }
     @Override
     public double initiateDamage() {
         return DAMAGE;
