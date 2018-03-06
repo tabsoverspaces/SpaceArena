@@ -9,6 +9,11 @@ import java.awt.*;
 
 public class RocketMissile extends Bullet{
 
+    public RocketMissile(Weapon source)
+    {
+        super(source);
+    }
+
     @Override
     public int initiateWidth() {
         return 25;
@@ -34,11 +39,6 @@ public class RocketMissile extends Bullet{
         return 35;
     }
 
-    public RocketMissile(Weapon source)
-    {
-        super(source);
-    }
-
 
 
     @Override
@@ -55,6 +55,7 @@ public class RocketMissile extends Bullet{
 
     @Override
     public boolean checkOutOfBounds(Rectangle bounds) {
+
         return false;
     }
 
@@ -66,39 +67,46 @@ public class RocketMissile extends Bullet{
     @Override
     public void drawBullet(Graphics g) {
 
-        int topx, leftx, rightx;
-        int topy, lefty, righty;
+        this.drawRocketMissile(g, this.getX(), this.getY());
 
-        topx = this.getX();
-        topy = this.getY() + ((this.getSource().getSource().getPlayerNo())*(-1)) + this.getHeight();
 
-        rightx = topx - this.getWidth()/2;
-        righty = this.getY();
+    }
 
-        leftx = topx + this.getWidth()/2;
-        lefty = this.getY();
+    private void drawRocketMissile(Graphics g, int x, int y)
+    {
+        int leftX, centerX, rightX;
+        int leftY, centerY, rightY;
 
-        int[] xarray = {topx,leftx, rightx};
-        int[] yarray = {topy, lefty, righty};
-        int number = 3;
-
-        if(this.getSource().getSource().getPlayerNo()==1)
+        if(this.getSource().getSource().getPlayerNo() == 1)
         {
-            Polygon p = new Polygon(xarray, yarray, number);
+            leftX = x - this.getWidth()/2;
+            leftY = y;
 
-            Graphics2D g2 = (Graphics2D)g;
-            g2.rotate(Math.toRadians(180));
-            g2.setColor(Color.black);
+            centerX = x;
+            centerY = y - this.getHeight();
 
-            g2.draw(p);
+            rightX = x+this.getWidth()/2;
+            rightY = y;
 
-            g2.rotate(Math.toRadians(180));
+
         }
         else
         {
-            g.drawPolygon(xarray, yarray, number);
+            leftX = x - this.getWidth()/2;
+            leftY = y;
+
+            centerX = x;
+            centerY = y + this.getHeight();
+
+            rightX = x+this.getWidth()/2;
+            rightY = y;
         }
 
+        // draw 3 lines
+        g.setColor(Color.black);
+        g.drawLine(leftX,leftY,rightX,rightY);
+        g.drawLine(rightX, rightY, centerX, centerY);
+        g.drawLine(centerX, centerY, leftX, leftY);
 
     }
 
