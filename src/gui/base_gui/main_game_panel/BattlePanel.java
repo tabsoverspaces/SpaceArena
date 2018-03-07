@@ -1,6 +1,6 @@
 package gui.base_gui.main_game_panel;
 
-import gui.battle_gui.Battle;
+import engine_classes.battles.Battle;
 
 import javax.swing.*;
 import java.awt.*;

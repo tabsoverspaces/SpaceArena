@@ -1,13 +1,14 @@
-package gui.battle_gui;
+package engine_classes.battles;
 
-import engine_classes.Player;
-import engine_classes.Ship;
+import engine_classes.player.Player;
 import engine_classes.items.weapons.bullets.Bullet;
+import gui.battle_gui.Animation;
+import gui.battle_gui.Battleship;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Battle {
+public abstract class Battle {
 
     // player 1
     private Player player1;

@@ -1,6 +1,6 @@
 package gui.base_gui;
 
-import engine_classes.Ship;
+import engine_classes.ship.Ship;
 import gui.GamePanel;
 
 import javax.swing.*;

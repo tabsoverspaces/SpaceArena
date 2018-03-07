@@ -1,4 +1,4 @@
-package engine_classes;
+package engine_classes.ship;
 
 import engine_classes.items.engines.BaseEngine;
 import engine_classes.items.engines.Engine;

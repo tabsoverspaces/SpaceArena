@@ -1,6 +1,6 @@
 package gui.base_gui.main_game_panel;
 
-import engine_classes.Player;
+import engine_classes.player.Player;
 
 import javax.swing.*;
 

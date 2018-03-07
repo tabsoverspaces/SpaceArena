@@ -1,10 +1,8 @@
 package gui.base_gui;
 
-import engine_classes.Player;
+import engine_classes.player.Player;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 public class LoginPanel extends JPanel {
 

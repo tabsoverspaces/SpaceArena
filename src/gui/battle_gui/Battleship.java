@@ -1,7 +1,6 @@
 package gui.battle_gui;
 
-import utility.Direction;
-import engine_classes.Ship;
+import engine_classes.ship.Ship;
 import engine_classes.items.weapons.Weapon;
 import engine_classes.items.weapons.bullets.Bullet;
 import interfaces.ApplyDamageInterface;
@@ -11,9 +10,6 @@ import interfaces.TakeDamageInterface;
 
 import javax.swing.*;
 import java.awt.*;
-
-import static utility.Direction.DOWN;
-import static utility.Direction.UP;
 
 public class Battleship implements Drawable, Movable, TakeDamageInterface  {
 

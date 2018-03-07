@@ -1,9 +1,11 @@
-package engine_classes.ai_control;
+package engine_classes.ai;
 
 public class MoveCooldown {
 
     private long lastMoveAt;
     private boolean moveOnCooldown;
+
+    private final int MAXIMUM_MOVES_PER_SECOND = 20;
 
 
 
@@ -12,12 +14,26 @@ public class MoveCooldown {
         this.lastMoveAt = System.nanoTime();
         this.moveOnCooldown = false;
     }
+    public void update()
+    {
+        if(this.moveOnCooldown)
+        {
+            this.updateMovementCooldown();
+        }
+    }
+
+    private void updateMovementCooldown()
+    {
+        long timeNow = System.nanoTime();
+
+        if (timeNow - this.lastMoveAt >= ((1 / this.MAXIMUM_MOVES_PER_SECOND * 1_000_000_000))) {
+            this.deactivateMoveCooldown();
+        }
+    }
 
     // main move API method
     public void move()
     {
-
-
         this.activateMoveCooldown();
     }
 

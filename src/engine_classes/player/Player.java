@@ -1,4 +1,6 @@
-package engine_classes;
+package engine_classes.player;
+
+import engine_classes.ship.Ship;
 
 import java.util.ArrayList;
 

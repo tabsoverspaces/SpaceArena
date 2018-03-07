@@ -1,9 +1,9 @@
 package gui;
 
-import engine_classes.Ship;
+import engine_classes.ship.Ship;
 import engine_classes.items.weapons.bullets.Bullet;
 import gui.battle_gui.Animation;
-import gui.battle_gui.Battle;
+import engine_classes.battles.Battle;
 import gui.battle_gui.Battleship;
 
 import javax.swing.*;
