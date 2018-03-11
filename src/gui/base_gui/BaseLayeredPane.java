@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 
 public class BaseLayeredPane extends JLayeredPane {
 
+    // parent holder frame
+    private MainFrame mainFrame;
+
     // components of the layered pane
     private LoginPanel loginPanel;
     private NewPlayerPanel newPlayerPanel;
@@ -18,20 +21,25 @@ public class BaseLayeredPane extends JLayeredPane {
     // stat holder
     private int componentCounter = 0 ;
 
-    public BaseLayeredPane()
+    public BaseLayeredPane(MainFrame mainFrame)
     {
+        this.mainFrame = mainFrame;
 
+        this.setPreferredSize(this.mainFrame.getPreferredSize());
     }
     public void init()
     {
-        this.loginPanel = new LoginPanel();
-        this.newPlayerPanel = new NewPlayerPanel();
+        this.loginPanel = new LoginPanel(this);
+        this.newPlayerPanel = new NewPlayerPanel(this);
 
         this.loginPanel.reinit();
         this.newPlayerPanel.reinit();
 
         this.add(this.loginPanel, new Integer(0));
         this.add(this.newPlayerPanel, new Integer(1));
+
+        this.loginPanel.setVisible(true);
+        this.newPlayerPanel.setVisible(false);
 
         // add listeners
         this.loginPanel.getLoginButton().addActionListener((ActionEvent e)->{
@@ -69,12 +77,19 @@ public class BaseLayeredPane extends JLayeredPane {
                 // 2. create main game panel with player object as parameter
                 // 3. initialize main game panel
                 // 4. start game
+
             }
         });
 
         this.loginPanel.setVisible(true);
         this.newPlayerPanel.setVisible(false);
     }
+
+    public MainFrame getMainFrame()
+    {
+        return this.mainFrame;
+    }
+
 
     public void reinitialize()
     {

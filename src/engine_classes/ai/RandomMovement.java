@@ -3,6 +3,8 @@ package engine_classes.ai;
 import engine_classes.battles.Battle;
 import engine_classes.battles.BattleAI;
 
+import java.util.Random;
+
 public class RandomMovement extends MovementManager
 {
 
@@ -16,29 +18,23 @@ public class RandomMovement extends MovementManager
     @Override
     public void generateMovement() {
 
-        int startingX = this.getBattle().getBattleship2().getX();
-        int startingY = this.getBattle().getBattleship2().getY();
+        int var = 0;
 
-        int deltaX = this.generateRandomX(startingX);
-        int deltaY = this.generateRandomY(startingY);
+        var = new Random().nextInt(4);
 
-        this.getBattle().getBattleship2().setX(startingX + deltaX);
-        this.getBattle().getBattleship2().setY(startingY + deltaY);
-    }
-
-    private int generateRandomX(int startingX)
-    {
-        int delta = 0;
-
-
-
-        return delta;
-    }
-
-    private int generateRandomY(int startingY)
-    {
-        int delta = 0;
-
-        return delta;
+        switch(var){
+            case 1:
+                this.getBattle().getBattleship2().moveUp();
+                break;
+            case 2:
+                this.getBattle().getBattleship2().moveDown();
+                break;
+            case 3:
+                this.getBattle().getBattleship2().moveLeft();
+                break;
+            case 4:
+                this.getBattle().getBattleship2().moveRight();
+                break;
+        }
     }
 }

@@ -1,5 +1,7 @@
 package gui.base_gui.main_game_panel;
 
+import gui.base_gui.MainFrame;
+
 import javax.swing.*;
 
 public class HomePanel extends JPanel {
@@ -9,6 +11,8 @@ public class HomePanel extends JPanel {
     private JButton armoryButton;
     private JButton shopPanel;
     private JButton spaceHuntButton;
+
+    private MainFrame mainFrame;
 
     public HomePanel()
     {

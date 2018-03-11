@@ -6,6 +6,9 @@ import javax.swing.*;
 
 public class LoginPanel extends JPanel {
 
+    // parent holder
+    private BaseLayeredPane baseLayeredPane;
+
     // components
     private JButton loginButton;
     private JButton newPlayerButton;
@@ -18,10 +21,12 @@ public class LoginPanel extends JPanel {
 
 
 
-    public LoginPanel()
+    public LoginPanel(BaseLayeredPane baseLayeredPane)
     {
+        this.baseLayeredPane = baseLayeredPane;
         //setup dimensions and layouts and shits here
 
+        this.setPreferredSize(this.baseLayeredPane.getMainFrame().getPreferredSize());
     }
 
     public void init()

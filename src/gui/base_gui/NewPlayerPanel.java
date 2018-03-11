@@ -6,15 +6,19 @@ import javax.swing.event.DocumentListener;
 
 public class NewPlayerPanel extends JPanel {
 
+    private BaseLayeredPane baseLayeredPane;
+
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JPasswordField passwordConfirmField;
     private JButton confirmButton;
     private JButton cancelButton;
 
-    public NewPlayerPanel()
+    public NewPlayerPanel(BaseLayeredPane baseLayeredPane)
     {
+        this.baseLayeredPane = baseLayeredPane;
 
+        this.setPreferredSize(this.baseLayeredPane.getMainFrame().getPreferredSize());
     }
 
     public void init()
