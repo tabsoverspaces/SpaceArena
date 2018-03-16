@@ -5,9 +5,11 @@ import javax.swing.*;
 public class ShopPanel extends JPanel {
 
 
-    public ShopPanel()
-    {
+    private ContentHolderLayeredPane contentHolderLayeredPane;
 
+    public ShopPanel(ContentHolderLayeredPane contentHolderLayeredPane)
+    {
+        this.contentHolderLayeredPane = contentHolderLayeredPane;
     }
 
     public void init(){

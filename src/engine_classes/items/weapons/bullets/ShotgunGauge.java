@@ -92,7 +92,7 @@ public class ShotgunGauge extends Bullet {
 
     @Override
     public double getBulletDamage() {
-        return 80 - (80*this.damagePenalty / 100);
+        return 60 - (80*this.damagePenalty / 100);
     }
 
     @Override

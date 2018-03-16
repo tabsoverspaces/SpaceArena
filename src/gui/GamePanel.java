@@ -382,7 +382,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
     public boolean collisionCheck(Battleship ship, Bullet b)
     {
-
         if(b.checkCollision(ship))
         {// damage ship
             ship.takeDamage(b);
@@ -392,7 +391,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
             Animation a = new Animation(b.getX() , b.getY() , ((-1)*b.getTotalDamage())+"");
             this.addAnimation(a);
-
 
             return true;
         }

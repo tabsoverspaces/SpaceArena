@@ -1,4 +1,4 @@
-package engine_classes.ai;
+package engine_classes.ai.movement;
 
 import engine_classes.battles.Battle;
 import engine_classes.battles.BattleAI;
@@ -34,6 +34,11 @@ public abstract class MovementManager {
 
 
     public abstract void generateMovement();
+
+    public void update()
+    {
+        this.moveCooldownHandler.update();
+    }
 
     public Battle getBattle()
     {

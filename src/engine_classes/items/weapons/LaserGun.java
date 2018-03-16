@@ -38,10 +38,7 @@ public class LaserGun extends Weapon {
     @Override
     public void drawWeapon(Graphics g){
 
-        this.drawLaserGun(g, this.getSource().getX()-20, this.getSource().getY());
-        this.drawLaserGun(g, this.getSource().getX() + this.getSource().getWidth() + 20, this.getSource().getY());
-
-
+        this.drawLaserGun(g, this.getSource().getShipCenterX()-this.gunWidth/2, this.getSource().getY());
     }
 
     @Override

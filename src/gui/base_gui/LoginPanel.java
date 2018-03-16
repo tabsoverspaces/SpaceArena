@@ -26,11 +26,14 @@ public class LoginPanel extends JPanel {
         this.baseLayeredPane = baseLayeredPane;
         //setup dimensions and layouts and shits here
 
-        this.setPreferredSize(this.baseLayeredPane.getMainFrame().getPreferredSize());
+
     }
 
     public void init()
     {
+        this.setBounds(0, 0 , MainFrame.width, MainFrame.height);
+        this.setLayout(null);
+
         this.loginButton = new JButton("Login");
         this.newPlayerButton = new JButton("Register new player");
 
@@ -40,8 +43,7 @@ public class LoginPanel extends JPanel {
         this.welcomeLabel = new JLabel("Welcome to SpaceArena");
         this.iconLabel = new JLabel();
 
-        // add listeners to elements
-
+        this.loginButton.setBounds(100, 100, 100, 30);
 
         this.add(this.loginButton);
         this.add(this.newPlayerButton);
@@ -49,6 +51,11 @@ public class LoginPanel extends JPanel {
         this.add(this.passwordField);
         this.add(this.welcomeLabel);
         this.add(this.iconLabel);
+
+        this.setVisible(true);
+
+        this.repaint();
+        this.revalidate();
     }
 
     public void reinit()

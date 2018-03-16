@@ -31,7 +31,7 @@ public class RocketMissile extends Bullet{
 
     @Override
     public double initiateBonusFirerate() {
-        return -50;
+        return 0;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class RocketMissile extends Bullet{
 
     @Override
     public double getBulletDamage() {
-        return 50;
+        return 40;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package gui.base_gui;
 
-import engine_classes.ship.Ship;
 import gui.GamePanel;
 
 import javax.swing.*;
@@ -47,6 +46,8 @@ public class MainFrame extends JFrame {
 
         this.add(this.baseLayeredPane);
 
+        this.repaint();
+        this.revalidate();
 
     }
 

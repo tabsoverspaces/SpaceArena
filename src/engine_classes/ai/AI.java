@@ -1,5 +1,6 @@
 package engine_classes.ai;
 
+import engine_classes.ai.movement.MoveCooldown;
 import engine_classes.battles.Battle;
 import gui.battle_gui.Battleship;
 

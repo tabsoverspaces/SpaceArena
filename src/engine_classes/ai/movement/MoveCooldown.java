@@ -1,11 +1,11 @@
-package engine_classes.ai;
+package engine_classes.ai.movement;
 
 public class MoveCooldown {
 
     private long lastMoveAt;
     private boolean moveOnCooldown;
 
-    private final int MAXIMUM_MOVES_PER_SECOND = 20;
+    private final double  MAXIMUM_MOVES_PER_SECOND = 100;
 
 
 

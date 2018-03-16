@@ -1,14 +1,17 @@
 package engine_classes.battles;
 
-import engine_classes.player.Player;
 import engine_classes.items.weapons.bullets.Bullet;
+import engine_classes.player.Player;
+import gui.base_gui.MainFrame;
 import gui.battle_gui.Animation;
 import gui.battle_gui.Battleship;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-public abstract class Battle {
+public abstract class Battle implements KeyListener {
 
     // player 1
     private Player player1;
@@ -30,7 +33,10 @@ public abstract class Battle {
     private boolean battlePaused;
 
 
-    public Battle()
+    /**
+     * Main constructor
+     */
+    private Battle()
     {
         this.listOfBullets = new ArrayList<>();
         this.listOfAnimations = new ArrayList<>();
@@ -39,8 +45,10 @@ public abstract class Battle {
         this.battleRunning = false;
     }
 
-    public void init(Player player1, Player player2)
+    public Battle(Player player1, Player player2)
     {
+        this();
+
         this.player1 = player1;
         this.player2 = player2;
 
@@ -49,8 +57,12 @@ public abstract class Battle {
 
         this.battleship2 = this.player2.getActiveShip().createBattleship();
         this.battleship2.setPlayerNo(-1);
+
     }
 
+    /**
+     * Method used to update the battle
+     */
     public void updateBattle()
     {
         if(this.battleOverCondition())
@@ -59,24 +71,88 @@ public abstract class Battle {
         this.battleship1.update();
         this.battleship2.update();
 
-        for(int i = 0 ; i < this.listOfBullets.size();i++)
-        {
-            Bullet b = this.listOfBullets.get(i);
+        this.updateBullets();
+        this.updateAnimations();
 
-            b.updateBullet();
+
+
+    }
+    public boolean collisionCheck(Battleship ship, Bullet b)
+    {
+        if(b.checkCollision(ship))
+        {// damage ship
+            ship.takeDamage(b);
+            b.applyDamage(ship);
+
+            this.listOfBullets.remove(b);
+
+            Animation a = new Animation(b.getX() , b.getY() , ((-1)*b.getTotalDamage())+"");
+            this.addAnimation(a);
+
+            return true;
         }
+        else
+        {
+            return false;
+        }
+    }
 
+    protected void updateAnimations()
+    {
         for(int i = 0 ; i < this.listOfAnimations.size() ; i ++)
         {
             Animation a = this.listOfAnimations.get(i);
 
             a.updateAnimation();
+
+            if(!a.isActive())
+            {
+              this.getListOfAnimations().remove(a);
+            }
         }
     }
 
+    protected void updateBullets()
+    {
+        for(int i = 0 ; i < this.listOfBullets.size();i++)
+        {
+            Bullet b = this.listOfBullets.get(i);
+
+            b.updateBullet();
 
 
+            if(b.getSource().getSource().equals(this.battleship1))
+            {
+                this.collisionCheck(this.battleship2, b);
+            }
+            else
+            {
+                this.collisionCheck(this.battleship1, b);
+            }
 
+            if(this.outOfBounds(b) || (!b.isActive()))
+            {
+                this.listOfBullets.remove(b);
+                continue;
+            }
+        }
+    }
+
+    protected boolean outOfBounds(Bullet b)
+    {
+        if(b.checkOutOfBounds(new Rectangle(0,0, MainFrame.width,MainFrame.height)))
+        {
+            this.listOfBullets.remove(b);
+            System.out.println("removed");
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Method used to draw the battle elements
+     * @param g
+     */
     public void drawBattle(Graphics g)
     {
         g.setColor(Color.black);
@@ -100,7 +176,11 @@ public abstract class Battle {
         }
     }
 
-    private boolean battleOverCondition()
+    /**
+     * Method used to check if battle is done
+     * @return
+     */
+    protected boolean battleOverCondition()
     {
         if(this.battleship1.getCurrentHealth() <= 0 )
             return true;
@@ -109,6 +189,89 @@ public abstract class Battle {
 
         return false;
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e){}
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+            int  c = e.getKeyCode();
+
+            if (c == KeyEvent.VK_W) {
+                this.battleship1.moveUp();
+            }
+            if (c == KeyEvent.VK_S) {
+
+                this.battleship1.moveDown();
+            }
+            if (c == KeyEvent.VK_D) {
+
+                this.battleship1.moveRight();
+            }
+            if (c == KeyEvent.VK_A) {
+
+                this.battleship1.moveLeft();
+            }
+
+            if (c == KeyEvent.VK_SPACE) {
+                if (!this.battleship1.getActiveWeapon().isShootingCooldown())
+                    this.addBullets(this.battleship1.shoot());
+            }
+
+            if(c==KeyEvent.VK_B)
+            {
+                if(!this.battleship1.isOnDodgeCooldown())
+                {
+                    this.battleship1.dodge();
+
+                    Animation a = new Animation(this.battleship1.getX()+this.battleship1.getWidth(), this.battleship1.getY(), "Dodging!");
+
+                    this.addAnimation(a);
+                }
+            }
+
+            if(c==KeyEvent.VK_Q)
+            {
+                this.battleship1.changeToPreviousWeapon();
+                Animation a = new Animation(this.battleship1.getX() + this.battleship1.getWidth() , this.battleship1.getY(), "Changed weapon");
+
+                this.addAnimation(a);
+            }
+            if(c==KeyEvent.VK_E)
+            {
+                this.battleship1.changeToNextWeapon();
+                Animation a = new Animation(this.battleship1.getX() + this.battleship1.getWidth() , this.battleship1.getY(), "Changed weapon");
+
+                this.addAnimation(a);
+            }
+
+    }
+
+    public void addAnimation(Animation a)
+    {
+        a.startAnimation();
+
+        this.getListOfAnimations().add(a);
+    }
+
+
+    public void addBullets(Bullet[] array)
+    {
+        for(int i = 0 ; i  < array.length ; i++)
+        {
+            Bullet b = array[i];
+
+            this.listOfBullets.add(b);
+        }
+    }
+
+
 
 
     // game flow control methods

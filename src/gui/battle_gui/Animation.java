@@ -56,11 +56,8 @@ public class Animation implements Drawable
 
         double currentPercentage = timeDifference / (this.duration*1_000_000_000.0);
 
-        System.out.println(currentPercentage);
-
         this.currentX = this.startingX +  (int) (this.distanceToCross * (currentPercentage));
         this.currentY = this.startingY -  (int) (this.distanceToCross * (currentPercentage));
-
 
         if(timeDifference>= this.duration * 1_000_000_000)
         {

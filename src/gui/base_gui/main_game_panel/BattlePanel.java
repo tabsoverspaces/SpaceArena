@@ -1,32 +1,57 @@
 package gui.base_gui.main_game_panel;
 
 import engine_classes.battles.Battle;
+import gui.base_gui.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class BattlePanel extends JPanel {
+public class BattlePanel extends JPanel implements Runnable{
 
     private Battle battle; // the battle objects that i being drawn and ran
 
     public BattlePanel(Battle battle)
     {
         // setup dimensons
+        this.setBounds(0, 0, MainFrame.width, MainFrame.height);
 
         this.battle = battle;
+
+        this.battle.getBattleship1().setParentPanel(this);
+        this.battle.getBattleship2().setParentPanel(this);
+
+        this.battle.getBattleship1().init();
+        this.battle.getBattleship2().init();
+
+        this.addKeyListener(this.battle);
+
     }
 
     public void paintComponent(Graphics g)
     {
+        // clear
+        g.setColor(Color.WHITE);
+        g.fillRect(0 , 0 , 2000, 1000);
+
         this.battle.drawBattle(g);
     }
+
+    public void startBattle()
+    {
+        this.battle.startGame();
+    }
+
     private void update()
     {
-
+        this.setFocusable(true);
+        this.grabFocus();
 
         this.battle.updateBattle();
+
         this.repaint();
     }
+
+
 
 
     // main game flow method
@@ -97,4 +122,6 @@ public class BattlePanel extends JPanel {
             }
         }
     }
+
+
 }

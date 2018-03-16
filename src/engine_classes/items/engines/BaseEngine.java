@@ -14,7 +14,7 @@ public class BaseEngine extends Engine {
 
     public double getMovementSpeedValue()
     {
-        return 10;
+        return 18;
     }
 
 }

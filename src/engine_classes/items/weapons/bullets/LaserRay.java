@@ -63,7 +63,7 @@ public class LaserRay extends Bullet {
 
     @Override
     public double getBulletDamage() {
-        return 1;
+        return 2.5;
     }
 
     @Override

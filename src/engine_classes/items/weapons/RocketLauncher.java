@@ -8,7 +8,7 @@ import java.awt.*;
 public class RocketLauncher extends Weapon {
 
     private final double DAMAGE = 0;
-    private final double FIRERATE = 8;
+    private final double FIRERATE = 1.5;
     private final double BULLET_SPEED = 550;
 
     public RocketLauncher()
